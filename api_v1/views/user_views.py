@@ -38,6 +38,7 @@ async def update_user(
         user_update=user_update
     )
 
+
 @router.patch('/{user_id}/')
 async def update_user_partial(
         user_update: UserUpdatePartial,

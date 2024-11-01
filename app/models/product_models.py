@@ -1,3 +1,4 @@
+import enum
 from enum import Enum
 from sqlalchemy import Enum as SQLEnum, String
 from sqlalchemy.orm import Mapped, mapped_column
@@ -5,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.models.base import Base
 
 
-class ProductType(Enum):
+class ProductType(str, enum.Enum):
     CAKE = 'cake'
     PASTRY = 'pastry'
 
