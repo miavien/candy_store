@@ -1,5 +1,8 @@
 import os
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from asyncio import current_task
+
+from pydantic_settings import BaseSettings
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, async_scoped_session
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -19,8 +22,25 @@ class DatabaseHelper:
             expire_on_commit=False,
         )
 
+    def get_scoped_session(self):
+        session = async_scoped_session(
+            session_factory=self.session_factory,
+            scopefunc=current_task,
+        )
+        return session
+
+    async def session_dependency(self):
+        async with self.session_factory() as session:
+            yield session
+            await session.close()
+
 
 db_helper = DatabaseHelper(
     url=DATABASE_URL,
     echo=True
 )
+
+class Setting(BaseSettings):
+    api_v1_prefix: str = '/api/v1'
+
+settings = Setting()

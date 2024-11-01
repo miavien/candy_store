@@ -2,7 +2,7 @@ from enum import Enum
 from sqlalchemy import Enum as SQLEnum, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from models.base import Base
+from app.models.base import Base
 
 
 class ProductType(Enum):
